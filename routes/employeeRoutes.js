@@ -4,9 +4,9 @@ router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
 const { MongoClient, ObjectId } = require('mongodb');
+require('dotenv').config(); // Load environment variables
 
-// MongoDB connection setup
-const uri = 'mongodb://127.0.0.1:27017';
+const uri = process.env.mongoDB_URL; // MongoDB URL from .env
 const dbName = 'employeesDB';
 let db;
 
