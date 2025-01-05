@@ -3,14 +3,27 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-const employeeData = require('../model/EmpData');
+const { MongoClient, ObjectId } = require('mongodb');
+
+// MongoDB connection setup
+const uri = 'mongodb://127.0.0.1:27017';
+const dbName = 'employeesDB';
+let db;
+
+// Connect to MongoDB
+MongoClient.connect(uri)
+  .then(client => {
+    db = client.db(dbName);
+    console.log('Connected to MongoDB');
+  })
+  .catch(err => console.error('MongoDB connection error:', err));
 
 // Define routes
 function employeeroutes(nav) {
   // Home Route
   router.get('/', async (req, res) => {
     try {
-      const data = await employeeData.find();
+      const data = await db.collection('employees').find().toArray();
       res.render('Home', {
         title: 'Employees',
         data,
@@ -33,8 +46,8 @@ function employeeroutes(nav) {
   // Add Employee
   router.post('/addemployee', async (req, res) => {
     try {
-      const newEmployee = new employeeData(req.body);
-      await newEmployee.save();
+      const newEmployee = req.body;
+      await db.collection('employees').insertOne(newEmployee);
       res.redirect('/employees');
     } catch (error) {
       console.error('Error adding employee:', error.message);
@@ -45,7 +58,7 @@ function employeeroutes(nav) {
   // Update Employee Form
   router.get('/updatepage/:id', async (req, res) => {
     try {
-      const data = await employeeData.findById(req.params.id);
+      const data = await db.collection('employees').findOne({ _id: new ObjectId(req.params.id) });
       res.render('UpdateEmp', {
         nav,
         data,
@@ -60,8 +73,11 @@ function employeeroutes(nav) {
   // Update Employee
   router.post('/edit/:id', async (req, res) => {
     try {
-      await employeeData.findByIdAndUpdate(req.params.id, req.body);
-      res.redirect("/employees");
+      await db.collection('employees').updateOne(
+        { _id: new ObjectId(req.params.id) },
+        { $set: req.body }
+      );
+      res.redirect('/employees');
     } catch (error) {
       console.error('Error updating employee:', error.message);
       res.status(404).send('Update unsuccessful');
@@ -71,8 +87,8 @@ function employeeroutes(nav) {
   // Delete Employee
   router.get('/delete/:id', async (req, res) => {
     try {
-      await employeeData.findByIdAndDelete(req.params.id);
-      res.redirect("/employees");
+      await db.collection('employees').deleteOne({ _id: new ObjectId(req.params.id) });
+      res.redirect('/employees');
     } catch (error) {
       console.error('Error deleting employee:', error.message);
       res.status(404).send('Delete unsuccessful');
