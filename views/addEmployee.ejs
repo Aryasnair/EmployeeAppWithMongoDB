@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Add Employee</title>
+</head>
+<body>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/add">Add Employee</a>
+    </nav>
+    <h1>Add Employee</h1>
+    <form action="/api/employees" method="POST">
+        <label>Name:</label>
+        <input type="text" name="name" required>
+        <label>Designation:</label>
+        <input type="text" name="designation" required>
+        <label>Location:</label>
+        <input type="text" name="location" required>
+        <label>Salary:</label>
+        <input type="number" name="salary" required>
+        <button type="submit">Add Employee</button>
+    </form>
+</body>
+</html>
