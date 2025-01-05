@@ -1,0 +1,31 @@
+body {
+    background-color: bisque;
+    background-image: url('../images/s.png');
+    background-size: cover; 
+
+}
+h1{
+    color: brown;
+}
+
+
+form{
+    
+    padding: 5%;
+    border: 2px solid rgb(226, 25, 126);
+    background-color: rgb(245, 225, 225);
+    margin-left: 20%;
+    margin-right: 20%;
+}
+.card {
+    background-size: cover;
+    background-position: center;
+    background-color: rgba(0, 0, 0, 0.5); /* Adds a semi-transparent overlay */
+    color: white; /* Text color */
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  
+  
+

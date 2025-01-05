@@ -1,11 +1,13 @@
 const mongoose = require('mongoose');
 
-const empSchema = mongoose.Schema({
-  empName: String,
-  empDesignation: String,
-  empLocation: String,
-  empSalary: Number // Corrected key name
+// Define Employee Schema
+const employeeSchema = mongoose.Schema({
+  employeeName: { type: String, required: true },
+  employeeDesignation: { type: String, required: true },
+  employeeLocation: { type: String, required: true },
+  employeeSalary: { type: Number, required: true },
 });
 
-const empData = mongoose.model('emp', empSchema);
-module.exports = empData;
+// Create and export model
+const employeeData = mongoose.model('employees', employeeSchema);
+module.exports = employeeData;
